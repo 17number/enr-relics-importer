@@ -30,7 +30,7 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
 ### 事前準備: ゲーム画面の動画撮影
 
-※撮影イメージサンプル: [relics_sample.mp4](./relics_sample.mp4)
+※撮影イメージサンプル: [relics_sample.mp4](https://github.com/17number/enr-relics-importer/raw/refs/heads/main/relics_sample.mp4)
 
 - 遺物儀式画面を表示
 - フィルター設定を更新
