@@ -1,0 +1,12 @@
+[project]
+name = "enr-relics-importer"
+version = "0.1.0"
+description = "Import relic data to csv from elden ring nightreign relics movie"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.3.4",
+    "opencv-python>=4.11.0.86",
+    "pyinstaller>=6.16.0",
+    "pytesseract>=0.3.13",
+]
