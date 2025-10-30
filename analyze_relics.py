@@ -712,6 +712,57 @@ DISADVANTAGE_EFFECTS = [
     "ＨＰ最大未満時、腐敗が蓄積",
     "瀕死時、最大ＨＰ低下",
 ]
+HAS_DISADVANTEGE_EFFECT_NAMES = [
+    "最大ＨＰ上昇",
+    "最大ＦＰ上昇",
+    "最大スタミナ上昇",
+    "物理攻撃力上昇＋３",
+    "物理攻撃力上昇＋４",
+    "属性攻撃力上昇＋１",
+    "属性攻撃力上昇＋２",
+    "魔力攻撃力上昇＋３",
+    "魔力攻撃力上昇＋４",
+    "炎攻撃力上昇＋３",
+    "炎攻撃力上昇＋４",
+    "雷攻撃力上昇＋３",
+    "雷攻撃力上昇＋４",
+    "聖攻撃力上昇＋３",
+    "聖攻撃力上昇＋４",
+    "魔術強化＋１",
+    "魔術強化＋２",
+    "祈祷強化＋１",
+    "祈祷強化＋２",
+    "ガードカウンター強化＋１",
+    "ガードカウンター強化＋２",
+    "脂アイテム使用時、追加で物理攻撃力上昇＋１",
+    "脂アイテム使用時、追加で物理攻撃力上昇＋２",
+    "敵を倒した時のアーツゲージ蓄積増加＋１",
+    "致命の一撃で、アーツゲージ蓄積増加＋１",
+    "ガード成功時、アーツゲージを蓄積＋１",
+    "物理カット率上昇＋１",
+    "物理カット率上昇＋２",
+    "属性カット率上昇＋１",
+    "属性カット率上昇＋２",
+    "魔力カット率上昇＋１",
+    "魔力カット率上昇＋２",
+    "炎カット率上昇＋１",
+    "炎カット率上昇＋２",
+    "雷カット率上昇＋１",
+    "雷カット率上昇＋２",
+    "聖カット率上昇＋１",
+    "聖カット率上昇＋２",
+    "刺突カウンター発生時、ＨＰ回復＋１",
+    "ダメージを受けた直後、攻撃によりＨＰの一部を回復＋１",
+    "ダメージを受けた直後、攻撃によりＨＰの一部を回復＋２",
+    "毒状態の敵に対する攻撃を強化＋１",
+    "毒状態の敵に対する攻撃を強化＋２",
+    "腐敗状態の敵に対する攻撃を強化＋１",
+    "腐敗状態の敵に対する攻撃を強化＋２",
+    "凍傷状態の敵に対する攻撃を強化＋１",
+    "凍傷状態の敵に対する攻撃を強化＋２",
+    "周囲で睡眠状態の発生時、攻撃力上昇＋１",
+    "周囲で発狂状態の発生時、攻撃力上昇＋１",
+]
 RELIC_INFO_DICT = {
     "ちぎれた組み紐": {"color": "blue", "type": "normal"},
     "にび色の砥石": {"color": "red", "type": "normal"},
@@ -972,6 +1023,11 @@ def analyze_relics(cap, frame, templates):
                     elif matched_effect and not matched_disadvantage and has_disadvantages:
                         # 効果は見つかったけどデメリットが見つからない場合、1行目にまとまっている想定でチェック
                         matched_disadvantage = find_closest_effect(line1_text, DISADVANTAGE_EFFECTS)
+
+                if matched_effect not in HAS_DISADVANTEGE_EFFECT_NAMES:
+                    matched_disadvantage = "";
+                elif matched_disadvantage == "":
+                    print(f"Frame {frame_idx}: Effect {i}: {matched_effect}: Disadvantage analyze error!!")
 
                 effects.append(matched_effect)
                 disadvantages.append(matched_disadvantage)
