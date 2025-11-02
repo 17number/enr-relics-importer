@@ -47,6 +47,7 @@ jobs:
             *ubuntu*)  OUT_NAME="${OUT_NAME}-linux" ;;
           esac
           mv dist/analyze_relics* "dist_renamed/${OUT_NAME}"
+          chmod +x "dist_renamed/${OUT_NAME}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -92,16 +93,18 @@ jobs:
         with:
           path: dist_all
 
-      - name: Zip artifacts by OS
+      - name: Zip artifacts by OS (preserve permissions)
         shell: bash
         run: |
           mkdir -p dist_zip
+          cd dist_all
           # Windows
-          find dist_all -name "*-win.exe" -exec zip -j dist_zip/analyze_relics-win.zip {} +
+          zip -r ../dist_zip/analyze_relics-win.zip windows-latest
           # Mac
-          find dist_all -name "*-mac" -exec zip -j dist_zip/analyze_relics-mac.zip {} +
+          zip -r ../dist_zip/analyze_relics-mac.zip macos-latest
           # Linux
-          find dist_all -name "*-linux" -exec zip -j dist_zip/analyze_relics-linux.zip {} +
+          zip -r ../dist_zip/analyze_relics-linux.zip ubuntu-latest
+          cd ..
 
       - name: Create new release with zip artifacts
         run: |
