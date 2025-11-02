@@ -40,7 +40,7 @@ CSV_PATH = os.path.join(
     f"relics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 )
 
-FRAME_SKIP_DIFF_TH = 3.0
+FRAME_SKIP_DIFF_TH = 1.75
 CALC_BASE_WIDTH = 3840
 CALC_BASE_HEIGHT = 2160
 CALC_BASE_RELIC_NAME_CHAR_WIDTH = 50
