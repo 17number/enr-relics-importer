@@ -1,0 +1,73 @@
+name: Build & Release (uv + PyInstaller, Win/Mac/Linux)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv (package manager)
+        run: |
+          pip install uv
+
+      - name: Install dependencies via uv
+        run: |
+          uv sync
+
+      - name: Build binary via PyInstaller
+        run: |
+          uv run pyinstaller --onefile --add-data "labeled_chars:labeled_chars" analyze_relics.py
+
+      - name: Rename output (add OS suffix)
+        shell: bash
+        run: |
+          mkdir -p dist_renamed
+          OUT_NAME="analyze_relics"
+          case "${{ matrix.os }}" in
+            *windows*) OUT_NAME="${OUT_NAME}-win.exe" ;;
+            *macos*)   OUT_NAME="${OUT_NAME}-mac" ;;
+            *ubuntu*)  OUT_NAME="${OUT_NAME}-linux" ;;
+          esac
+          mv dist/analyze_relics* "dist_renamed/${OUT_NAME}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}
+          path: dist_renamed/
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist_all
+
+      - name: List built files (debug)
+        run: ls -R dist_all
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist_all/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
