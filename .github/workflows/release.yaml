@@ -26,16 +26,13 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv (package manager)
-        run: |
-          pip install uv
+        run: pip install uv
 
       - name: Install dependencies via uv
-        run: |
-          uv sync
+        run: uv sync
 
       - name: Build binary via PyInstaller
-        run: |
-          uv run pyinstaller --onefile --add-data "labeled_chars:labeled_chars" analyze_relics.py
+        run: uv run pyinstaller --onefile --add-data "labeled_chars:labeled_chars" analyze_relics.py
 
       - name: Rename output (add OS suffix)
         shell: bash
@@ -88,9 +85,12 @@ jobs:
         with:
           path: dist_all
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist_all/**/*
+      - name: Create new release
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "Creating release $TAG..."
+          gh release create "$TAG" --title "$TAG" --notes "Automatic release for $TAG"
+          echo "Uploading artifacts..."
+          gh release upload "$TAG" dist_all/**/* --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
