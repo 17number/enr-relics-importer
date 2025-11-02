@@ -67,7 +67,7 @@ jobs:
       - name: Install GitHub CLI
         run: |
           sudo apt update
-          sudo apt install -y gh
+          sudo apt install -y gh zip unzip
 
       - name: Authenticate GitHub CLI
         run: gh auth setup-git
@@ -92,12 +92,18 @@ jobs:
         with:
           path: dist_all
 
-      - name: Create new release and upload artifacts
+      - name: Zip artifacts by OS
+        shell: bash
+        run: |
+          mkdir -p dist_zip
+          zip -j dist_zip/analyze_relics-win.zip dist_all/*-win.exe
+          zip -j dist_zip/analyze_relics-mac.zip dist_all/*-mac
+          zip -j dist_zip/analyze_relics-linux.zip dist_all/*-linux
+
+      - name: Create new release with artifacts
         run: |
           TAG=${GITHUB_REF#refs/tags/}
-          echo "Creating release $TAG..."
-          gh release create "$TAG" --title "$TAG" --notes "Automatic release for $TAG"
-          echo "Uploading artifacts..."
-          gh release upload "$TAG" dist_all/**/* --clobber
+          echo "Creating release $TAG with artifacts..."
+          gh release create "$TAG" dist_zip/*.zip --title "$TAG" --notes "Automatic release for $TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
