@@ -885,7 +885,7 @@ def load_labeled_templates(average=True):
         if not os.path.isdir(base_dir):
             continue
         grouped = {}
-        for fname in os.listdir(base_dir, encoding="utf-8"):
+        for fname in os.listdir(base_dir):
             if not fname.endswith(".png"):
                 continue
             label = os.path.splitext(fname)[0]
