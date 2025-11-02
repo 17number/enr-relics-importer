@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -57,6 +59,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Install GitHub CLI
         run: |
           sudo apt update
@@ -85,7 +92,7 @@ jobs:
         with:
           path: dist_all
 
-      - name: Create new release
+      - name: Create new release and upload artifacts
         run: |
           TAG=${GITHUB_REF#refs/tags/}
           echo "Creating release $TAG..."
