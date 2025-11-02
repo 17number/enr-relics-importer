@@ -22,6 +22,12 @@ def resource_path(relative_path):
             return alt_path
     return path
 
+def imread_unicode(path, flags=cv2.IMREAD_GRAYSCALE):
+    with open(path, 'rb') as f:
+        bytes_data = f.read()
+    img_array = np.frombuffer(bytes_data, np.uint8)
+    return cv2.imdecode(img_array, flags)
+
 # === 設定 ===
 VIDEO_PATH = resource_path("relics.mp4")
 LABELED_BASE = resource_path("labeled_chars")
@@ -885,7 +891,7 @@ def load_labeled_templates(average=True):
             label = label[0] if kind == "effect" else label
             label = unicodedata.normalize("NFC", label)
             path = os.path.join(base_dir, fname)
-            img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+            img = imread_unicode(path, cv2.IMREAD_GRAYSCALE)
             if img is None:
                 continue
             img_proc = preprocess(img)
