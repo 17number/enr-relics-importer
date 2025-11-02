@@ -869,6 +869,7 @@ def calc_similarity(img_gray, template_gray):
 def match_best_char(char_img_gray, labeled_dict):
     best_char, best_score = None, 0.0
     for ch, samples in labeled_dict.items():
+        ch = ch.replace("\r", "")
         for tmpl in samples:
             score = calc_similarity(char_img_gray, tmpl)
             if score > best_score:
@@ -884,7 +885,7 @@ def load_labeled_templates(average=True):
         if not os.path.isdir(base_dir):
             continue
         grouped = {}
-        for fname in os.listdir(base_dir):
+        for fname in os.listdir(base_dir, encoding="utf-8"):
             if not fname.endswith(".png"):
                 continue
             label = os.path.splitext(fname)[0]
