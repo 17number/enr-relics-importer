@@ -96,11 +96,14 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist_zip
-          zip -j dist_zip/analyze_relics-win.zip dist_all/*-win.exe
-          zip -j dist_zip/analyze_relics-mac.zip dist_all/*-mac
-          zip -j dist_zip/analyze_relics-linux.zip dist_all/*-linux
+          # Windows
+          find dist_all -name "*-win.exe" -exec zip -j dist_zip/analyze_relics-win.zip {} +
+          # Mac
+          find dist_all -name "*-mac" -exec zip -j dist_zip/analyze_relics-mac.zip {} +
+          # Linux
+          find dist_all -name "*-linux" -exec zip -j dist_zip/analyze_relics-linux.zip {} +
 
-      - name: Create new release with artifacts
+      - name: Create new release with zip artifacts
         run: |
           TAG=${GITHUB_REF#refs/tags/}
           echo "Creating release $TAG with artifacts..."
