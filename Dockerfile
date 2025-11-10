@@ -25,4 +25,4 @@ RUN mkdir -p /app/output
 VOLUME ["/app/output"]
 
 # ---- 実行コマンド ----
-CMD python3.12 -u analyze_relics.py; echo -e "\a"
+CMD ["python3.12", "-u", "analyze_relics.py"]
