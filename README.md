@@ -38,7 +38,7 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
 ![](./assets/images/download_zip.png)
 
-- mac の場合、ZIP 展開後後に以下を一度だけ実行しておく
+- mac の場合、ZIP 展開後に以下を一度だけ実行しておく
 
 ```bash
 # /path/to/ の部分は各自の環境向けに適宜置き換え
