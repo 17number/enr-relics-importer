@@ -2,7 +2,7 @@
 
 ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
-遺物儀式画面のキャプチャ動画(右入力して対象遺物をすべて撮影)を解析し、パターンマッチングで 遺物名/効果/デメリット を 解析/特定 して CSV 出力。
+遺物儀式画面のキャプチャ動画(右入力して対象遺物をすべて撮影)を解析し、パターンマッチングで 遺物名/効果/デメリット を特定して CSV 出力。
 
 出力された CSV は [遺物組み合わせ(ビルド)探索ツール](https://17number.github.io/enr-relics-simulator/) へのインポートにも利用可能。
 
@@ -16,11 +16,11 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
     - ゲーム画面以外(Windows のタイトルバー部分など)を含む
   - 日本語以外の言語で撮影された動画
 - 以下環境の動作検証は未実施
-  - Windows 環境での抽出
-  - steam 版の撮影動画からの抽出
-  - Xbox 版の撮影動画からの抽出
-  - 縦横サイズが検証動画と異なる動画からの抽出
-  - ゲーム中の HDR 設定、輝度設定、画質設定を変更した動画からの抽出。検証は以下設定でのみ実施。
+  - Windows 環境での解析
+  - steam 版の撮影動画からの解析
+  - Xbox 版の撮影動画からの解析
+  - 縦横サイズが検証動画と異なる動画からの解析
+  - ゲーム中の HDR 設定、輝度設定、画質設定を変更した動画からの解析。検証は以下設定でのみ実施。
     - HDR: ON
     - 輝度設定: HDR ON につき設定不可
     - 画質設定
@@ -30,7 +30,22 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
 ## 使い方
 
-### 事前準備: ゲーム画面の動画撮影
+### 事前準備: ツールの インストール/ダウンロード
+
+- [Docker Desktop](https://www.docker.com/ja-jp/products/docker-desktop/) をインストールして起動
+- [GitHub](https://github.com/17number/enr-relics-importer) の Download ZIP から ZIP ファイルをダウンロード(下記画像を参照)
+  - ダウンロード後、ZIP ファイルは展開(解凍)しておく
+
+![](./assets/images/download_zip.png)
+
+- mac の場合、ZIP 展開後に以下を一度だけ実行しておく
+
+```bash
+# /path/to/ の部分は各自の環境向けに適宜置き換え
+xattr -d com.apple.quarantine /path/to/run_analyze_relics.command
+```
+
+### ゲーム画面の動画撮影
 
 ※撮影イメージサンプル: [relics_sample.mp4](https://github.com/17number/enr-relics-importer/raw/refs/heads/main/relics_sample.mp4)
 
@@ -54,15 +69,16 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
 ### 遺物一覧CSV作成
 
-- 解析用プログラム(`analyze_relics`)を [Releases ページ](https://github.com/17number/enr-relics-importer/releases) からダウンロード
 - 撮影動画のファイル名を `relics.mp4` に変更
   - ファイル名は固定
   - mp4 形式ではない場合、mp4 形式に変換しておく
-- `relics.mp4` を解析用プログラムを同じフォルダ(ディレクトリ)に配置
+- `relics.mp4` を解析用ツールフォルダ(ディレクトリ)に配置
 - 解析用プログラムを実行
+  - win: `run_analyze_relics.bat`
+  - mac: `run_analyze_relics.command`
   - PC スペック、動画サイズ、PC 使用状況 などで解析時間は変動
-- 完了後、同じ場所に `relics_YYYYMMDD_HHmmss.csv` として出力
-  - 例: `relics_20251027_120702`
+- 完了後、 `output` 内に `relics_YYYYMMDD_HHmmss.csv` として出力
+  - 例: `relics_20251027_120702.csv`
 
 ## 補足など
 
@@ -94,10 +110,4 @@ uv run extract_templates.py
 
 ```bash
 uv run analyze_relics.py
-```
-
-### ビルド方法
-
-```bash
-uv run pyinstaller --onefile --add-data "labeled_chars:labeled_chars" analyze_relics.py
 ```
