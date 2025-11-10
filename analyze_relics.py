@@ -33,10 +33,14 @@ VIDEO_PATH = resource_path("relics.mp4")
 LABELED_BASE = resource_path("labeled_chars")
 NAME_DIR = os.path.join(LABELED_BASE, "name")
 EFFECT_DIR = os.path.join(LABELED_BASE, "effect")
-CSV_PATH = os.path.join(
+output_dir = os.path.join(
     os.path.dirname(sys.executable)
         if getattr(sys, 'frozen', False)
-        else os.path.abspath("."),
+        else os.path.abspath("output")
+)
+os.makedirs(output_dir, exist_ok=True)
+CSV_PATH = os.path.join(
+    output_dir,
     f"relics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 )
 
