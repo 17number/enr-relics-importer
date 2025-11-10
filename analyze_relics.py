@@ -990,7 +990,7 @@ def analyze_relics(cap, frame, templates):
                 break
             frame_idx += 1
 
-            progress = frame_idx / total_frames * 100
+            progress = math.floor(frame_idx / total_frames * 100 * 10) / 10
             print(f"Frame {frame_idx}/{total_frames} ({progress:.1f}%)", end='\r')
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
