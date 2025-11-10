@@ -1,10 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 echo === ELDEN RING NIGHTREIGN Relics Analyzer ===
+
+cd /d "%~dp0"
+
 echo Building Docker image...
 docker build -t enr-relics-importer .
 
-for /f "delims=" %%i in ('wsl wslpath "%cd%"') do set "PWD_LINUX=%%i"
+rem Convert current dir to Linux path
+for /f "delims=" %%i in ('powershell -NoProfile -Command "(Get-Location).Path.ToLower()"') do set "PWD_LINUX=%%i"
 
 echo Running analysis...
 docker run --rm ^
