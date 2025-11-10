@@ -111,9 +111,3 @@ uv run extract_templates.py
 ```bash
 uv run analyze_relics.py
 ```
-
-### ビルド方法
-
-```bash
-uv run pyinstaller --onefile --add-data "labeled_chars:labeled_chars" analyze_relics.py
-```
