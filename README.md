@@ -33,6 +33,7 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 ### 事前準備: ツールの インストール/ダウンロード
 
 - [Docker Desktop](https://www.docker.com/ja-jp/products/docker-desktop/) をインストールして起動
+  - Windows は [こちら](https://zenn.dev/upgradetech/articles/8e8b82e9d5c494) を参考に
 - [GitHub](https://github.com/17number/enr-relics-importer) の Download ZIP から ZIP ファイルをダウンロード(下記画像を参照)
   - ダウンロード後、ZIP ファイルは展開(解凍)しておく
 
