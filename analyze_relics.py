@@ -837,6 +837,29 @@ RELIC_INFO_DICT = {
     "魔女のブローチ": {"color": "blue", "type": "normal"},
     "夜の痕跡": {"color": "green", "type": "normal"},
 }
+IGNORE_FULLSCORE_CHARS = [
+    "、",
+    "（",
+    "）",
+    "※",
+    "べ",
+    "演",
+    "音",
+    "換",
+    "近",
+    "再",
+    "事",
+    "衝",
+    "全",
+    "足",
+    "適",
+    "難",
+    "能",
+    "波",
+    "避",
+    "瀕",
+    "来",
+]
 
 # === ROI 比率変換 ===
 def scaled_rect(x1, y1, x2, y2, fw, fh):
@@ -870,12 +893,19 @@ def calc_similarity(img_gray, template_gray):
 
 
 # === 最も近い文字を推定 ===
-def match_best_char(char_img_gray, labeled_dict):
+def match_best_char(char_img_gray, labeled_dict, score_th=0.5):
     best_char, best_score = None, 0.0
     for ch, samples in labeled_dict.items():
         ch = ch.replace("\r", "")
         for tmpl in samples:
             score = calc_similarity(char_img_gray, tmpl)
+            if score < score_th:
+                continue
+
+            if score == 1.0:
+                if ch in IGNORE_FULLSCORE_CHARS:
+                    continue  # 誤認識対策
+
             if score > best_score:
                 best_score = score
                 best_char = ch
@@ -896,7 +926,7 @@ def load_labeled_templates(average=True):
             label = label[0] if kind == "effect" else label
             label = unicodedata.normalize("NFC", label)
             path = os.path.join(base_dir, fname)
-            img = imread_unicode(path, cv2.IMREAD_GRAYSCALE)
+            img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
             if img is None:
                 continue
             img_proc = preprocess(img)
@@ -927,6 +957,8 @@ def recognize_text(line_img, labeled_dict, char_width, n_chars=40):
         x2 = min((i + 1) * char_width, w)
         char_img = gray[:, x1:x2]
         ch, score = match_best_char(char_img, labeled_dict)
+        if ch is None or (result and result[-1] == ch):
+            break
         result += ch if ch else ""
     return unicodedata.normalize("NFC", result.strip())
 
