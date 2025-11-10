@@ -38,6 +38,13 @@ ELDEN RING NIGHTREIGN の遺物を CSV 形式で出力するツール。
 
 ![](./assets/images/download_zip.png)
 
+- mac の場合、ZIP 展開後後に以下を一度だけ実行しておく
+
+```bash
+# /path/to/ の部分は各自の環境向けに適宜置き換え
+xattr -d com.apple.quarantine /path/to/run_analyze_relics.command
+```
+
 ### ゲーム画面の動画撮影
 
 ※撮影イメージサンプル: [relics_sample.mp4](https://github.com/17number/enr-relics-importer/raw/refs/heads/main/relics_sample.mp4)

@@ -17,7 +17,7 @@ COPY pyproject.toml uv.lock ./
 RUN pip install --break-system-packages uv && uv pip install --system --break-system-packages .
 
 # ---- アプリ資産コピー ----
-COPY analyze_relics.py analyze_relics.spec ./
+COPY analyze_relics.py ./
 COPY labeled_chars ./labeled_chars
 
 # ---- 出力ディレクトリ設定 ----
