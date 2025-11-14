@@ -1069,7 +1069,7 @@ def analyze_relics(cap, frame, templates):
 
                 if matched_effect not in HAS_DISADVANTEGE_EFFECT_NAMES:
                     matched_disadvantage = "";
-                elif matched_disadvantage == "":
+                elif matched_disadvantage == "" and has_disadvantages:
                     print(f"Frame {frame_idx}: Effect {i}: {matched_effect}: Disadvantage analyze error!!")
 
                 effects.append(matched_effect)
